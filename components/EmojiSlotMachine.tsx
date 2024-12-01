@@ -1,73 +1,79 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from 'react'
+import { Button } from "@/components/ui/button"
 
-const emojis = ["😀", "😎", "🥳", "🚀", "💎", "🍕", "🌈", "🎉"];
+const emojis = ['😀', '😎', '🥳', '🚀', '💎', '🍕', '🌈', '🎉']
 
-export default function EmojiSlotMachine({ initialDailySpecial }) {
-  const [slots, setSlots] = useState(Array(initialDailySpecial.length).fill("❓"));
-  const [spinning, setSpinning] = useState(false);
-  const [lever, setLever] = useState(false);
-  const [dailySpecial, setDailySpecial] = useState(initialDailySpecial);
-  const [score, setScore] = useState(0);
-  const [error, setError] = useState(null);
+export default function EmojiSlotMachine({ initialDailySpecial }: { initialDailySpecial: string[] }) {
+  const [slots, setSlots] = useState(['❓', '❓', '❓', '❓'])
+  const [spinning, setSpinning] = useState(false)
+  const [lever, setLever] = useState(false)
+  const [dailySpecial, setDailySpecial] = useState(initialDailySpecial)
+  const [score, setScore] = useState(0)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchDailySpecial = async () => {
       try {
-        const res = await fetch("/api/daily-special", {
-          headers: { "Content-Type": "application/json" },
-        });
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const data = await res.json();
-        setDailySpecial(data.dailySpecial);
-        setError(null);
+        const res = await fetch('/api/daily-special', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`)
+        }
+
+        const data = await res.json()
+        setDailySpecial(data.dailySpecial)
+        setError(null)
       } catch (error) {
-        console.error("Error fetching daily special:", error.message || error);
-        setError("Failed to fetch daily special. Using default.");
+        console.error('Error fetching daily special:', error)
+        setError('Failed to fetch daily special. Using default.')
       }
-    };
+    }
 
-    fetchDailySpecial();
-  }, []);
-
-  const arraysEqual = (arr1, arr2) => arr1.length === arr2.length && arr1.every((val, index) => val === arr2[index]);
+    fetchDailySpecial()
+  }, [])
 
   const spinSlots = () => {
-    setSpinning(true);
-    setLever(true);
-    setTimeout(() => setLever(false), 300);
+    setSpinning(true)
+    setLever(true)
 
+    // Simulate spinning for 2 seconds
     const spinInterval = setInterval(() => {
-      setSlots(() => Array.from({ length: dailySpecial.length }, () => emojis[Math.floor(Math.random() * emojis.length)]));
-    }, 100);
+      setSlots(slots.map(() => emojis[Math.floor(Math.random() * emojis.length)]))
+    }, 100)
 
     setTimeout(() => {
-      clearInterval(spinInterval);
-      setSpinning(false);
-      const newSlots = Array.from({ length: dailySpecial.length }, () => emojis[Math.floor(Math.random() * emojis.length)]);
-      setSlots(newSlots);
+      clearInterval(spinInterval)
+      setSpinning(false)
+      setLever(false)
+      // Final random selection
+      const newSlots = slots.map(() => emojis[Math.floor(Math.random() * emojis.length)])
+      setSlots(newSlots)
 
-      if (arraysEqual(newSlots, dailySpecial)) {
-        setScore((prevScore) => prevScore + 1000);
+      // Check if the new slots match the daily special
+      if (JSON.stringify(newSlots) === JSON.stringify(dailySpecial)) {
+        setScore(prevScore => prevScore + 1000)
       } else {
-        const matchCount = newSlots.filter((slot, index) => slot === dailySpecial[index]).length;
-        setScore((prevScore) => prevScore + matchCount * 100);
+        // Regular scoring logic
+        const matchCount = newSlots.filter((slot, index) => slot === dailySpecial[index]).length
+        setScore(prevScore => prevScore + matchCount * 100)
       }
-    }, 2000);
-  };
+    }, 2000)
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="bg-yellow-400 p-8 rounded-3xl shadow-2xl">
         <div className="flex space-x-4 mb-6">
           {slots.map((emoji, index) => (
-            <div
-              key={index}
-              className={`w-16 h-16 md:w-20 md:h-20 bg-white rounded-lg flex items-center justify-center text-4xl ${
-                spinning ? "animate-spin" : ""
-              }`}
+            <div 
+              key={index} 
+              className={`w-20 h-20 bg-white rounded-lg flex items-center justify-center text-4xl ${spinning ? 'animate-spin' : ''}`}
             >
               {emoji}
             </div>
@@ -77,16 +83,14 @@ export default function EmojiSlotMachine({ initialDailySpecial }) {
           <Button
             onClick={spinSlots}
             disabled={spinning}
-            className={`bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-full transform transition-transform ${
-              lever ? "translate-y-2" : ""
-            }`}
-            aria-live="polite"
-            aria-label="Pull the lever to spin the slots"
+            className={`bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-full transform transition-transform ${lever ? 'translate-y-2' : ''}`}
           >
             Pull Lever
           </Button>
         </div>
-        <div className="text-center text-xl font-bold mb-4">Score: {score}</div>
+        <div className="text-center text-xl font-bold mb-4">
+          Score: {score}
+        </div>
         <div className="text-center">
           <h3 className="text-lg font-semibold mb-2">Daily Special:</h3>
           <div className="flex justify-center space-x-2">
@@ -100,5 +104,6 @@ export default function EmojiSlotMachine({ initialDailySpecial }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
+
