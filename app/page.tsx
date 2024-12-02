@@ -36,7 +36,7 @@ export default async function Home() {
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-orange-400 to-red-500 pt-16">
       {/* QR Code in the upper-right corner */}
       <div className="absolute top-4 right-4">
-        <QRCodePage searchParams={{}} /> {/* Pass empty params for now */}
+        <QRCodePage /> 
       </div>
 
       {/* Main Content */}
