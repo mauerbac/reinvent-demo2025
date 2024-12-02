@@ -1,4 +1,6 @@
 import EmojiSlotMachine from '../components/EmojiSlotMachine'
+import QRCodePage from './api/qr-code/page'; // Import QRCodePage logic
+
 
 async function getDailySpecial() {
   try {
@@ -31,7 +33,13 @@ export default async function Home() {
   console.log("im in here ", initialDailySpecial);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-orange-400 to-red-500 pt-16">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-orange-400 to-red-500 pt-16">
+      {/* QR Code in the upper-right corner */}
+      <div className="absolute top-4 right-4">
+        <QRCodePage searchParams={{}} /> {/* Pass empty params for now */}
+      </div>
+
+      {/* Main Content */}
       <h1 className="text-4xl font-bold text-white mb-12 text-center">AWS re:Invent</h1>
       <EmojiSlotMachine initialDailySpecial={initialDailySpecial} />
     </div>
