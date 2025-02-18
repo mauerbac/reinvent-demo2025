@@ -38,12 +38,14 @@ export default async function QRCodePage() {
   console.log("im in an SSR function hello! It is ", dateString)
    // Get item from DynamoDB
    const dynamoItem = await getDynamoItem();
+   const highScore = Number(dynamoItem.high_score.N);
    console.log('Retrieved DynamoDB item:', dynamoItem);
 
 
 
   return (
     <div className="bg-white p-2 rounded-lg shadow-lg">
+    <h3>High Score: {highScore}</h3>
       <img src={qrCode} alt="QR Code" className="w-32 h-32" />
       <p className="mt-2 text-center text-sm">{baseUrl}</p>
     </div>
