@@ -37,13 +37,6 @@ export default async function QRCodePage() {
 
   console.log("im in an SSR function hello! It is ", dateString)
 
-  // Try to get a secret value
-  const secretValue = await getSecret('prod/secret-test');
-  console.log('Raw secret value:', secretValue); // Log raw value
-  console.log('Secret value type:', typeof secretValue); // Log type
-  console.log('Secret value stringified:', JSON.stringify(secretValue)); // Log stringified version
-
-
   return (
     <div className="bg-white p-2 rounded-lg shadow-lg">
       <img src={qrCode} alt="QR Code" className="w-32 h-32" />
