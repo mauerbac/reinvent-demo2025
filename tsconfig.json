@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "checkJs": false,
     "skipLibCheck": true,
@@ -11,7 +15,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
     "disableSizeLimit": true,
@@ -21,14 +25,23 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     },
-    "typeRoots": ["node_modules/@types", "lib/types"]
+    "typeRoots": [
+      "node_modules/@types",
+      "lib/types"
+    ]
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "lib/types/**/*.d.ts"
   ],
-  "exclude": ["node_modules", "**/*.ts", "**/*.tsx"]
+  "exclude": [
+    "node_modules",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }
