@@ -1,6 +1,5 @@
 import React from "react";
 import QRCode from "qrcode";
-import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 
 
 
