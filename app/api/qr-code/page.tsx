@@ -38,7 +38,7 @@ export default async function QRCodePage() {
   console.log("im in an SSR function hello! It is ", dateString)
    // Get item from DynamoDB
    const dynamoItem = await getDynamoItem();
-   const highScore = Number(dynamoItem.high_score.N);
+   const highScore = Number(dynamoItem?.high_score?.N || 0);
    console.log('Retrieved DynamoDB item:', dynamoItem);
 
 
