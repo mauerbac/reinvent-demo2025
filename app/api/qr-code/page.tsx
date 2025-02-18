@@ -3,29 +3,6 @@ import QRCode from "qrcode";
 import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 
 
-const secretsManager = new SecretsManagerClient({
-  region: process.env.AWS_REGION || 'us-east-1',
-});
-
-async function getSecret(secretName: string) {
-  try {
-    const command = new GetSecretValueCommand({
-      SecretId: secretName,
-    });
-    const response = await secretsManager.send(command);
-    if (response.SecretString) {
-      try {
-        return JSON.parse(response.SecretString);
-      } catch {
-        return response.SecretString;
-      }
-    }
-    return null;
-  } catch (error) {
-    console.error('Error fetching secret:', error);
-    return null;
-  }
-}
 
 export default async function QRCodePage() {
   // Use a default base URL; replace with a dynamic host if deployed
